@@ -5,7 +5,7 @@ import { urlInfo } from '@typings/url';
 import { imageInfo } from '@typings/image';
 import { remove as removeImage } from '../../reducer/imageSlice';
 import { remove as removeUrl, edit as editUrl } from '../../reducer/urlSlice';
-import checkExistenceOfScheme from '@utils/checkExistenceOfScheme';
+import checkExistenceOfScheme from '@utils/scheme';
 
 interface ResourceItemProps {
   resource: urlInfo | imageInfo;
