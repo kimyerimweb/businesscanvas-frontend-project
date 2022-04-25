@@ -13,7 +13,7 @@ interface ResourceItemProps {
 
 export default function ResourceItem({ resource }: ResourceItemProps) {
   const [view, setView] = useState(false);
-  const [text, setText] = useState('');
+  const [text, setText] = useState('url' in resource ? resource.url : resource.image.name);
   const dispatch = useDispatch();
 
   const handleToggleInput = useCallback(() => {
