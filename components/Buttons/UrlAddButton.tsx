@@ -32,6 +32,12 @@ export default function UrlAddButton() {
     [dispatch, url],
   );
 
+  const handleCloseUrl = useCallback(() => {
+    setView(false);
+    setUrl('');
+    setError(false);
+  }, []);
+
   return (
     <>
       <button type="submit" onClick={handleToggleView}>
@@ -40,7 +46,7 @@ export default function UrlAddButton() {
 
       {view && (
         <form onSubmit={handleSubmitUrl}>
-          <input type="text" value={url} onChange={handleChangeUrl} />
+          <input type="text" value={url} onChange={handleChangeUrl} onBlur={handleCloseUrl} />
           {error && <p>올바른 형식의 URL을 입력하세요</p>}
         </form>
       )}
