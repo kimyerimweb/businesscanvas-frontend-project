@@ -22,6 +22,7 @@ export default function UrlAddButton() {
   const handleSubmitUrl = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      setError(false);
 
       checkExistenceOfScheme(url)
         ? dispatch(add({ url: checkYoutubeAndChangeToEmbedUrl(url), time: new Date().getTime() }))
