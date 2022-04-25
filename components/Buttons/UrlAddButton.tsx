@@ -2,11 +2,13 @@ import React, { useState, useCallback } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { add } from '../../reducer/urlSlice';
-import checkExistenceOfScheme from '@utils/checkExistenceOfScheme';
+import checkExistenceOfScheme from '@utils/scheme';
+import checkYoutubeAndChangeToEmbedUrl from '@utils/embedUrl';
 
 export default function UrlAddButton() {
   const [view, setView] = useState(false);
-  const [url, setUrl] = useState('https://');
+  const [error, setError] = useState(false);
+  const [url, setUrl] = useState('');
   const dispatch = useDispatch();
 
   const handleToggleView = useCallback(() => {
@@ -22,8 +24,8 @@ export default function UrlAddButton() {
       e.preventDefault();
 
       checkExistenceOfScheme(url)
-        ? dispatch(add({ url, time: new Date().getTime() }))
-        : dispatch(add({ url: `https://${url}`, time: new Date().getTime() }));
+        ? dispatch(add({ url: checkYoutubeAndChangeToEmbedUrl(url), time: new Date().getTime() }))
+        : setError(true);
       setUrl('');
     },
     [dispatch, url],
@@ -38,6 +40,7 @@ export default function UrlAddButton() {
       {view && (
         <form onSubmit={handleSubmitUrl}>
           <input type="text" value={url} onChange={handleChangeUrl} />
+          {error && <p>올바른 형식의 URL을 입력하세요</p>}
         </form>
       )}
     </>
