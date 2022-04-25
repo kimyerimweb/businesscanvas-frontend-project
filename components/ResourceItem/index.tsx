@@ -6,6 +6,7 @@ import { imageInfo } from '@typings/image';
 import { remove as removeImage } from '../../reducer/imageSlice';
 import { remove as removeUrl, edit as editUrl } from '../../reducer/urlSlice';
 import checkExistenceOfScheme from '@utils/scheme';
+import checkYoutubeAndChangeToEmbedUrl from '@utils/embedUrl';
 
 interface ResourceItemProps {
   resource: urlInfo | imageInfo;
@@ -23,15 +24,10 @@ export default function ResourceItem({ resource }: ResourceItemProps) {
           ? dispatch(
               editUrl({
                 urlInfo: resource,
-                newUrl: text,
+                newUrl: checkYoutubeAndChangeToEmbedUrl(text),
               }),
             )
-          : dispatch(
-              editUrl({
-                urlInfo: resource,
-                newUrl: `https://${text}`,
-              }),
-            );
+          : null;
       }
       setText('');
     }
@@ -62,7 +58,7 @@ export default function ResourceItem({ resource }: ResourceItemProps) {
   return (
     <div>
       <form onSubmit={handleEditResource}>
-        {view && <input type="text" value={text} onChange={handleChangeText} />}
+        {view && <input type="text" value={text} onChange={handleChangeText} onBlur={handleToggleInput} />}
       </form>
       {!view && ('url' in resource ? <span>{resource.url}</span> : <span>{resource.image.name}</span>)}
       <button type="button" onClick={handleToggleInput}>
