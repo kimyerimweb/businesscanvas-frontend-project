@@ -18,7 +18,7 @@ export default function Viewer() {
       {view && (
         <div>
           <div>
-            <header>{value && 'url' in value ? value.url : value?.image.name}</header>
+            <header>{value && 'url' in value ? value.name : value?.image.name}</header>
             <button type="button" onClick={handleCloseViewer}>
               닫기
             </button>

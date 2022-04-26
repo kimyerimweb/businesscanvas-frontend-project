@@ -5,8 +5,6 @@ import { urlInfo } from '@typings/url';
 import { imageInfo } from '@typings/image';
 import { remove as removeImage } from '@reducer/imageSlice';
 import { remove as removeUrl, edit as editUrl } from '@reducer/urlSlice';
-import checkExistenceOfScheme from '@utils/scheme';
-import checkYoutubeAndChangeToEmbedUrl from '@utils/embedUrl';
 import { replaceValue, toggleView } from '@reducer/viewSlice';
 
 import { Item } from '@components/ResourceItem/style';
@@ -28,16 +26,8 @@ export default function ResourceItem({ resource }: ResourceItemProps) {
 
       if (view) {
         if ('url' in resource) {
-          checkExistenceOfScheme(text)
-            ? dispatch(
-                editUrl({
-                  urlInfo: resource,
-                  newUrl: checkYoutubeAndChangeToEmbedUrl(text),
-                }),
-              )
-            : null;
+          dispatch(editUrl({ urlInfo: resource, newName: text }));
         }
-        setText(checkYoutubeAndChangeToEmbedUrl(text));
       }
       setView((prev) => !prev);
     },
@@ -60,7 +50,7 @@ export default function ResourceItem({ resource }: ResourceItemProps) {
   return (
     <Item onClick={handleOpenViewer}>
       {view && <EditTextForm text={text} setText={setText} resource={resource} handleToggleInput={handleToggleInput} />}
-      {!view && ('url' in resource ? <span>{resource.url}</span> : <span>{resource.image.name}</span>)}
+      {!view && ('url' in resource ? <span>{resource.name}</span> : <span>{resource.image.name}</span>)}
       <div>
         <button type="button" onClick={handleToggleInput}>
           <TypedIcon icon="edit_small" style={{ fontSize: '25px' }} />

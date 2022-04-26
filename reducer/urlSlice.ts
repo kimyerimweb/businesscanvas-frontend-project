@@ -4,8 +4,16 @@ import { urlState, urlInfo, editUrlProps } from '@typings/url';
 
 const initialState: urlState = {
   value: [
-    { url: 'https://www.robinwieruch.de/react-libraries/', time: 1 },
-    { url: 'https://typed.blog/how-to-write-a-better-research-paper-faster/', time: 2 },
+    {
+      url: 'https://www.robinwieruch.de/react-libraries/',
+      name: 'https://www.robinwieruch.de/react-libraries/',
+      time: 1,
+    },
+    {
+      url: 'https://typed.blog/how-to-write-a-better-research-paper-faster/',
+      name: 'https://typed.blog/how-to-write-a-better-research-paper-faster/',
+      time: 2,
+    },
   ],
 };
 
@@ -21,7 +29,11 @@ export const urlSlice = createSlice({
     },
     edit: (state, action: PayloadAction<editUrlProps>) => {
       const idx = state.value.indexOf(action.payload.urlInfo);
-      const newValue = { time: action.payload.urlInfo.time, url: action.payload.newUrl };
+      const newValue = {
+        url: action.payload.urlInfo.url,
+        time: action.payload.urlInfo.time,
+        name: action.payload.newName,
+      };
       state.value.splice(idx, 1, newValue);
     },
   },

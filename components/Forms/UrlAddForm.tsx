@@ -31,7 +31,13 @@ export default function UrlAddForm({ view, setView }: UrlAddFormProps) {
       setError(false);
 
       checkExistenceOfScheme(url)
-        ? dispatch(add({ url: checkYoutubeAndChangeToEmbedUrl(url), time: new Date().getTime() }))
+        ? dispatch(
+            add({
+              url: checkYoutubeAndChangeToEmbedUrl(url),
+              name: checkYoutubeAndChangeToEmbedUrl(url),
+              time: new Date().getTime(),
+            }),
+          )
         : setError(true);
       setUrl('');
     },

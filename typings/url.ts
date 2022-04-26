@@ -1,5 +1,6 @@
 export interface urlInfo {
   url: string;
+  name: string;
   time: number;
 }
 
@@ -9,5 +10,5 @@ export interface urlState {
 
 export interface editUrlProps {
   urlInfo: urlInfo;
-  newUrl: string;
+  newName: string;
 }

@@ -4,8 +4,6 @@ import { useDispatch } from 'react-redux';
 import { edit as editUrl } from '@reducer/urlSlice';
 import { urlInfo } from '@typings/url';
 import { imageInfo } from '@typings/image';
-import checkExistenceOfScheme from '@utils/scheme';
-import checkYoutubeAndChangeToEmbedUrl from '@utils/embedUrl';
 
 interface EditTextFormProps {
   text: string;
@@ -26,17 +24,14 @@ export default function EditTextForm({ text, setText, resource, handleToggleInpu
 
   const handleEditResource = useCallback(() => {
     if ('url' in resource) {
-      checkExistenceOfScheme(text)
-        ? dispatch(
-            editUrl({
-              urlInfo: resource,
-              newUrl: checkYoutubeAndChangeToEmbedUrl(text),
-            }),
-          )
-        : null;
+      dispatch(
+        editUrl({
+          urlInfo: resource,
+          newName: text,
+        }),
+      );
     }
-    setText(checkYoutubeAndChangeToEmbedUrl(text));
-  }, [resource, dispatch, text, setText]);
+  }, [resource, dispatch, text]);
 
   return (
     <form onSubmit={handleEditResource}>
