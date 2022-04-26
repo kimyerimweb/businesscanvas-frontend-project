@@ -5,16 +5,16 @@ import ImageAddButton from '@components/Buttons/ImageAddButton';
 
 import ResourceList from '@components/ResourceList';
 
+import { ButtonWrapper, EditorContainer } from '@layouts/Editor/style';
+
 export default function Editor() {
   return (
-    <div>
-      <div>
+    <EditorContainer>
+      <ButtonWrapper>
         <UrlAddButton />
         <ImageAddButton />
-      </div>
-      <div>
-        <ResourceList />
-      </div>
-    </div>
+      </ButtonWrapper>
+      <ResourceList />
+    </EditorContainer>
   );
 }

@@ -7,6 +7,8 @@ import { imageInfo } from '@typings/image';
 
 import ResourceItem from '@components/ResourceItem';
 
+import { List } from '@components/ResourceList/style';
+
 export default function ResourceList() {
   const urls = useSelector((state: RootState) => state.urls.value);
   const images = useSelector((state: RootState) => state.images.value);
@@ -18,12 +20,12 @@ export default function ResourceList() {
   }, [urls, images]);
 
   return (
-    <ol>
+    <List>
       {resources
         .sort((a, b) => b.time - a.time)
         .map((resource) => (
           <ResourceItem key={resource.time} resource={resource} />
         ))}
-    </ol>
+    </List>
   );
 }

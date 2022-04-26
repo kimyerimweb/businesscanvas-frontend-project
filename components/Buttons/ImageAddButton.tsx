@@ -1,36 +1,23 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { add } from '../../reducer/imageSlice';
 
+import { ImageButton } from '@components/Buttons/style';
+
 export default function ImageAddButton() {
   const dispatch = useDispatch();
-  const [images, setImages] = useState<File[]>([]);
-  const [view, setView] = useState(false);
 
-  const handleChangeImages = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setView(true);
-
-    if (e.target.files) {
-      for (let i = 0; i < e.target.files.length; i++) {
-        const file = e.target.files[i];
-        setImages((prev) => [...prev, file]);
+  const handleChangeImages = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        for (let i = 0; i < e.target.files.length; i++) {
+          const image = e.target.files[i];
+          dispatch(add({ image, time: new Date().getTime() }));
+        }
       }
-    }
-  }, []);
-
-  const handleUploadImages = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-
-      images.forEach((image) => {
-        dispatch(add({ image, time: new Date().getTime() }));
-      });
-
-      setImages([]);
-      setView(false);
     },
-    [dispatch, images],
+    [dispatch],
   );
 
   const imageInputRef = useRef<any>();
@@ -40,21 +27,18 @@ export default function ImageAddButton() {
 
   return (
     <>
-      <form onSubmit={handleUploadImages}>
-        <label htmlFor="images" onClick={handleClickUploadButton}>
-          이미지 추가
-        </label>
-        <input
-          type="file"
-          id="images"
-          accept=".jpg, .png"
-          multiple
-          hidden
-          ref={imageInputRef}
-          onChange={handleChangeImages}
-        />
-        {view && <input type="submit" />}
-      </form>
+      <ImageButton htmlFor="images" onClick={handleClickUploadButton}>
+        이미지 추가
+      </ImageButton>
+      <input
+        type="file"
+        id="images"
+        accept=".jpg, .png"
+        multiple
+        hidden
+        ref={imageInputRef}
+        onChange={handleChangeImages}
+      />
     </>
   );
 }

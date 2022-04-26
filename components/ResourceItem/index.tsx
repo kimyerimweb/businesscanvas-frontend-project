@@ -9,6 +9,9 @@ import checkExistenceOfScheme from '@utils/scheme';
 import checkYoutubeAndChangeToEmbedUrl from '@utils/embedUrl';
 import { replaceValue, toggleView } from '@reducer/viewSlice';
 
+import { Item } from '@components/ResourceItem/style';
+import { TypedIcon } from 'typed-design-system';
+
 interface ResourceItemProps {
   resource: urlInfo | imageInfo;
 }
@@ -18,22 +21,27 @@ export default function ResourceItem({ resource }: ResourceItemProps) {
   const [text, setText] = useState('url' in resource ? resource.url : resource.image.name);
   const dispatch = useDispatch();
 
-  const handleToggleInput = useCallback(() => {
-    if (view) {
-      if ('url' in resource) {
-        checkExistenceOfScheme(text)
-          ? dispatch(
-              editUrl({
-                urlInfo: resource,
-                newUrl: checkYoutubeAndChangeToEmbedUrl(text),
-              }),
-            )
-          : null;
+  const handleToggleInput = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement> | React.FocusEvent<HTMLInputElement>) => {
+      e.stopPropagation();
+
+      if (view) {
+        if ('url' in resource) {
+          checkExistenceOfScheme(text)
+            ? dispatch(
+                editUrl({
+                  urlInfo: resource,
+                  newUrl: checkYoutubeAndChangeToEmbedUrl(text),
+                }),
+              )
+            : null;
+        }
+        setText(checkYoutubeAndChangeToEmbedUrl(text));
       }
-      setText('');
-    }
-    setView((prev) => !prev);
-  }, [resource, dispatch, text, view]);
+      setView((prev) => !prev);
+    },
+    [resource, dispatch, text, view],
+  );
 
   const handleChangeText = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -52,9 +60,13 @@ export default function ResourceItem({ resource }: ResourceItemProps) {
     setText('');
   }, [resource, dispatch, text]);
 
-  const handleDeleteResource = useCallback(() => {
-    'url' in resource ? dispatch(removeUrl(resource)) : dispatch(removeImage(resource));
-  }, [resource, dispatch]);
+  const handleDeleteResource = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      'url' in resource ? dispatch(removeUrl(resource)) : dispatch(removeImage(resource));
+    },
+    [resource, dispatch],
+  );
 
   const handleOpenViewer = useCallback(() => {
     dispatch(replaceValue(resource));
@@ -62,17 +74,29 @@ export default function ResourceItem({ resource }: ResourceItemProps) {
   }, [dispatch, resource]);
 
   return (
-    <div onClick={handleOpenViewer}>
+    <Item onClick={handleOpenViewer}>
       <form onSubmit={handleEditResource}>
-        {view && <input type="text" value={text} onChange={handleChangeText} onBlur={handleToggleInput} />}
+        {view && (
+          <input
+            type="text"
+            value={text}
+            onChange={handleChangeText}
+            onBlur={handleToggleInput}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          />
+        )}
       </form>
       {!view && ('url' in resource ? <span>{resource.url}</span> : <span>{resource.image.name}</span>)}
-      <button type="button" onClick={handleToggleInput}>
-        연필
-      </button>
-      <button type="button" onClick={handleDeleteResource}>
-        쓰레기통
-      </button>
-    </div>
+      <div>
+        <button type="button" onClick={handleToggleInput}>
+          <TypedIcon icon="edit_small" style={{ fontSize: '25px' }} />
+        </button>
+        <button type="button" onClick={handleDeleteResource}>
+          <TypedIcon icon="trash_small" style={{ fontSize: '20px' }} />
+        </button>
+      </div>
+    </Item>
   );
 }

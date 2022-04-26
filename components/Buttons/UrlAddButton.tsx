@@ -5,6 +5,8 @@ import { add } from '../../reducer/urlSlice';
 import checkExistenceOfScheme from '@utils/scheme';
 import checkYoutubeAndChangeToEmbedUrl from '@utils/embedUrl';
 
+import { UrlButton, Input, Form } from '@components/Buttons/style';
+
 export default function UrlAddButton() {
   const [view, setView] = useState(false);
   const [error, setError] = useState(false);
@@ -16,12 +18,14 @@ export default function UrlAddButton() {
   }, []);
 
   const handleChangeUrl = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setError(false);
     setUrl(e.target.value);
   }, []);
 
   const handleSubmitUrl = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      setView(false);
       setError(false);
 
       checkExistenceOfScheme(url)
@@ -40,16 +44,18 @@ export default function UrlAddButton() {
 
   return (
     <>
-      <button type="submit" onClick={handleToggleView}>
-        URL 추가
-      </button>
+      <div style={{ position: 'relative' }}>
+        <UrlButton type="button" onClick={handleToggleView}>
+          URL 추가
+        </UrlButton>
 
-      {view && (
-        <form onSubmit={handleSubmitUrl}>
-          <input type="text" value={url} onChange={handleChangeUrl} onBlur={handleCloseUrl} />
-          {error && <p>올바른 형식의 URL을 입력하세요</p>}
-        </form>
-      )}
+        {view && (
+          <Form onSubmit={handleSubmitUrl}>
+            <Input type="text" value={url} onChange={handleChangeUrl} onBlur={handleCloseUrl} />
+            {error && <p>올바른 형식의 URL을 입력하세요</p>}
+          </Form>
+        )}
+      </div>
     </>
   );
 }
