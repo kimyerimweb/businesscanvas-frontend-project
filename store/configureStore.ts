@@ -9,6 +9,10 @@ export const store = configureStore({
     urls: urlReducer,
     view: viewReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
