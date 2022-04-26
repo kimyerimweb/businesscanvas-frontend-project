@@ -8,6 +8,7 @@ export const EditorContainer = styled.div`
 `;
 
 export const ButtonWrapper = styled.div`
+  position: relative;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -16,4 +17,5 @@ export const ButtonWrapper = styled.div`
   padding: 10px;
   background-color: #fff;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 50;
 `;
