@@ -17,10 +17,13 @@ export default function Viewer() {
     <div style={{ backgroundColor: '#fff' }}>
       {view && (
         <div>
+          <div>
+            <header>{value && 'url' in value ? value.url : value?.image.name}</header>
+            <button type="button" onClick={handleCloseViewer}>
+              닫기
+            </button>
+          </div>
           {value && 'url' in value ? <iframe src={value.url} frameBorder="0"></iframe> : null}
-          <button type="button" onClick={handleCloseViewer}>
-            닫기
-          </button>
         </div>
       )}
     </div>
