@@ -11,6 +11,7 @@ import { replaceValue, toggleView } from '@reducer/viewSlice';
 
 import { Item } from '@components/ResourceItem/style';
 import { TypedIcon } from 'typed-design-system';
+import EditTextForm from '@components/Forms/EditTextForm';
 
 interface ResourceItemProps {
   resource: urlInfo | imageInfo;
@@ -43,23 +44,6 @@ export default function ResourceItem({ resource }: ResourceItemProps) {
     [resource, dispatch, text, view],
   );
 
-  const handleChangeText = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-  }, []);
-
-  const handleEditResource = useCallback(() => {
-    if ('url' in resource) {
-      resource.url = text;
-      dispatch(
-        editUrl({
-          urlInfo: resource,
-          newUrl: `https://${text}`,
-        }),
-      );
-    }
-    setText('');
-  }, [resource, dispatch, text]);
-
   const handleDeleteResource = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
@@ -75,19 +59,7 @@ export default function ResourceItem({ resource }: ResourceItemProps) {
 
   return (
     <Item onClick={handleOpenViewer}>
-      <form onSubmit={handleEditResource}>
-        {view && (
-          <input
-            type="text"
-            value={text}
-            onChange={handleChangeText}
-            onBlur={handleToggleInput}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
-        )}
-      </form>
+      {view && <EditTextForm text={text} setText={setText} resource={resource} handleToggleInput={handleToggleInput} />}
       {!view && ('url' in resource ? <span>{resource.url}</span> : <span>{resource.image.name}</span>)}
       <div>
         <button type="button" onClick={handleToggleInput}>
