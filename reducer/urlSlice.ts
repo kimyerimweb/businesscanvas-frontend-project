@@ -3,7 +3,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { urlState, urlInfo, editUrlProps } from '@typings/url';
 
 const initialState: urlState = {
-  value: [],
+  value: [
+    { url: 'https://www.robinwieruch.de/react-libraries/', time: 1 },
+    { url: 'https://typed.blog/how-to-write-a-better-research-paper-faster/', time: 2 },
+  ],
 };
 
 export const urlSlice = createSlice({
