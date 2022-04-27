@@ -15,23 +15,26 @@ export const ViewerContainer = styled.div`
       justify-content: space-between;
       align-items: center;
       height: 50px;
-      padding: 0 17px;
+      padding-left: 17px;
       box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
       z-index: 100;
 
       h1 {
-        display: block;
+        width: calc(100% - 40px);
+        max-width: 600px;
         font-size: 14px;
         line-height: 16px;
         color: #000;
-        flex-shrink: 1;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
       }
 
       button {
-        flex-shrink: 0;
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
         border: 0;
         background-color: #fff;
         cursor: pointer;
