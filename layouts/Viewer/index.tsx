@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@store/configureStore';
 import { replaceValue, toggleView } from '@reducer/viewSlice';
 
+import { ViewerContainer } from '@layouts/Viewer/style';
+import { TypedIcon } from 'typed-design-system';
+
 export default function Viewer() {
   const { view, value } = useSelector((state: RootState) => state.view);
   const dispatch = useDispatch();
@@ -32,18 +35,20 @@ export default function Viewer() {
   }, [value]);
 
   return (
-    <div style={{ backgroundColor: '#fff' }}>
+    <ViewerContainer>
       {view && (
         <div>
           <header>
             <h1>{value && 'url' in value ? value.name : value?.image.name}</h1>
             <button type="button" onClick={handleCloseViewer}>
-              닫기
+              <TypedIcon icon="close_small" style={{ fontSize: '25px' }} />
             </button>
           </header>
           <main>
             {value && 'url' in value ? (
-              <iframe src={value.url} frameBorder="0"></iframe>
+              <div>
+                <iframe src={value.url} frameBorder="0"></iframe>
+              </div>
             ) : (
               <div>
                 <img src={typeof imageUrl === 'string' ? imageUrl : undefined} alt="" />
@@ -52,6 +57,6 @@ export default function Viewer() {
           </main>
         </div>
       )}
-    </div>
+    </ViewerContainer>
   );
 }

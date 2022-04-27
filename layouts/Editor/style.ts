@@ -4,6 +4,7 @@ export const EditorContainer = styled.div`
   background-color: #f7f7f7;
   width: 280px;
   height: 100vh;
+  flex-shrink: 0;
   border-right: 1px solid #c4c4c4;
 `;
 
