@@ -16,16 +16,20 @@
 
     - 화면은 Editor 영역과 Viewer 영역으로 나뉘고 App에서 합쳐집니다.
 
-    1.  Editor 영역은 리소스 리스트가 보이고/추가/삭제/이름 변경이 가능합니다. - 리소스 추가 시 준수해야하는 사항 1. “https://” 또는 “http://” scheme 이 포함되어야 한다. - 입력한 문자열에 includes() 함수를 이용해 http://나 https:// 가 있는지 판단하고, 없으면 입력창에 에러메시지를 보여줍니다.
+    1.  Editor 영역은 리소스 리스트가 보이고/추가/삭제/이름 변경이 가능합니다.
 
-        ```javascript
-        export default function checkExistenceOfScheme(url: string) {
-          if (url && (url.indexOf('http://') === 0 || url.indexOf('https://') === 0)) {
-            return true;
-          }
-          return false; //utils/scheme.ts
-        }
-        ```
+        - 리소스 추가 시 준수해야하는 사항
+
+        1. “https://” 또는 “http://” scheme 이 포함되어야 한다. - 입력한 문자열에 includes() 함수를 이용해 http://나 https:// 가 있는지 판단하고, 없으면 입력창에 에러메시지를 보여줍니다.
+
+           ```javascript
+           export default function checkExistenceOfScheme(url: string) {
+             if (url && (url.indexOf('http://') === 0 || url.indexOf('https://') === 0)) {
+               return true;
+             }
+             return false; //utils/scheme.ts
+           }
+           ```
 
     2.  youtube url은 embed url로 변경해야 한다.
 
@@ -101,10 +105,12 @@
         );
         ```
 
-        위와 같이 구현했습니다. 원래 의도대로 사진이 차례대로 하나씩 올라가면서 성공/실패 토스트 메시지를 육안으로 확인할 수 있도록 작성하려했으나,
-        dispatch와 동시에 화면에 이미지가 들어있는 List item이 보이면서 리렌더링으로 마지막 토스트 메시지만 확인할 수 있습니다.
-        이 부분은 해결 방법을 찾지 못한 버그입니다.
-        그리고 if-else가 아닌 if-return문으로 구현하는게 안전한 것은 인지하고 있으나, 조건에 위배되는 경우에 return을 하면 함수가 완전히 끝나 다음 파일을 추가할 수 없고, if조건 안에 있는 값 외에는 모든 상황을 실패로 가정하기 위해서는 else문을 쓰는거 더 적합하다고 판단했습니다.
+        위와 같이 구현했습니다. 원래 의도대로 사진이 차례대로 하나씩 올라가면서 성공/실패 토스트 메시지를 육안으로 확인할 수 있도록 작성하려했으나,<br/>
+        dispatch와 동시에 화면에 이미지가 들어있는 List item이 보이면서 리렌더링으로 마지막 토스트 메시지만 확인할 수 있습니다.<br/>
+        이 부분은 해결 방법을 찾지 못한 버그입니다.<br/>
+        그리고 if-else가 아닌 if-return문으로 구현하는게 안전한 것은 인지하고 있으나, <br/>
+        조건에 위배되는 경우에 return을 하면 함수가 완전히 끝나 다음 파일을 추가할 수 없고,<br/>
+        if조건 안에 있는 값 외에는 모든 상황을 실패로 가정하기 위해서는 else문을 쓰는거 더 적합하다고 판단했습니다.<br/>
 
 3.  url 리소스와 image 리소스를 클릭하면 뷰어에 리소스가 보여야한다. -> 구현 완료
 4.  뷰어는 닫을 수 있어야 한다. -> 구현 완료
