@@ -9,6 +9,7 @@ import { ImageButton } from '@components/Buttons/style';
 export default function ImageAddButton() {
   const [isuploadSuccess, setIsuploadSuccess] = useState(false);
   const [isuploadFailure, setIsuploadFailure] = useState(false);
+  const [number, setNumber] = useState(0);
   const dispatch = useDispatch();
 
   const handleChangeImages = useCallback(
@@ -16,20 +17,20 @@ export default function ImageAddButton() {
       if (e.target.files) {
         for (let i = 0; i < e.target.files.length; i++) {
           const uploadTime = Math.random() * 1000;
+          const image = e.target.files[i];
 
-          await setTimeout(() => {}, uploadTime);
-
-          if (uploadTime < 1000 && uploadTime > 300) {
-            dispatch(add({ image: e.target.files[i], time: new Date().getTime() + i }));
-            //시간이 동일하면 삭제나 수정이 되지 않는다. (컴포넌트끼리 서로 구분을 못해서 어떤 것을 건드려야할지 모르기 때문에)
+          if (uploadTime >= 300 && uploadTime <= 1000) {
             setIsuploadSuccess(true);
-            setTimeout(() => {
-              setIsuploadSuccess(false);
-            }, 2000);
-            return;
+            setNumber(i);
+            await setTimeout(function () {
+              dispatch(add({ image, time: new Date().getTime() + i }));
+            }, uploadTime);
+          } else {
+            setNumber(i);
+            setIsuploadFailure(true);
           }
-          setIsuploadFailure(true);
-          setTimeout(() => {
+          await setTimeout(function () {
+            setIsuploadSuccess(false);
             setIsuploadFailure(false);
           }, 2000);
         }
@@ -59,7 +60,7 @@ export default function ImageAddButton() {
       />
       {isuploadSuccess && (
         <PopUpMessage
-          message={'등록에 성공했습니다!'}
+          message={`${number + 1}번째 사진 등록 성공`}
           handleClosePopUp={() => {
             setIsuploadSuccess(false);
           }}
@@ -67,7 +68,7 @@ export default function ImageAddButton() {
       )}
       {isuploadFailure && (
         <PopUpMessage
-          message={'등록에 실패했습니다..'}
+          message={`${number + 1}번째 사진 등록 실패`}
           handleClosePopUp={() => {
             setIsuploadFailure(false);
           }}
