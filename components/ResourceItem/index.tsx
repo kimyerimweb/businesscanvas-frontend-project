@@ -23,7 +23,6 @@ export default function ResourceItem({ resource }: ResourceItemProps) {
   const handleToggleInput = useCallback(
     (e: React.MouseEvent<HTMLButtonElement> | React.FocusEvent<HTMLInputElement>) => {
       e.stopPropagation();
-
       if (view) {
         if ('url' in resource) {
           dispatch(editUrl({ urlInfo: resource, newName: text }));
@@ -49,7 +48,16 @@ export default function ResourceItem({ resource }: ResourceItemProps) {
 
   return (
     <Item onClick={handleOpenViewer}>
-      {view && <EditTextForm text={text} setText={setText} resource={resource} handleToggleInput={handleToggleInput} />}
+      {view && (
+        <EditTextForm
+          view={view}
+          text={text}
+          setView={setView}
+          setText={setText}
+          resource={resource}
+          handleToggleInput={handleToggleInput}
+        />
+      )}
       {!view && ('url' in resource ? <span>{resource.name}</span> : <span>{resource.image.name}</span>)}
       <div>
         <button type="button" onClick={handleToggleInput}>
