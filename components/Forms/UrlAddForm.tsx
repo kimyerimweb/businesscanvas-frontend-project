@@ -27,18 +27,21 @@ export default function UrlAddForm({ view, setView }: UrlAddFormProps) {
   const handleSubmitUrl = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      setView(false);
       setError(false);
 
-      checkExistenceOfScheme(url)
-        ? dispatch(
-            add({
-              url: checkYoutubeAndChangeToEmbedUrl(url),
-              name: checkYoutubeAndChangeToEmbedUrl(url),
-              time: new Date().getTime(),
-            }),
-          )
-        : setError(true);
+      if (checkExistenceOfScheme(url)) {
+        dispatch(
+          add({
+            url: checkYoutubeAndChangeToEmbedUrl(url),
+            name: checkYoutubeAndChangeToEmbedUrl(url),
+            time: new Date().getTime(),
+          }),
+        );
+
+        setView(false);
+        return;
+      }
+      setError(true);
       setUrl('');
     },
     [dispatch, url, setView],

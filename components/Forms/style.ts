@@ -30,7 +30,7 @@ export const Form = styled.form`
 
   p {
     position: absolute;
-    bottom: 0;
+    bottom: -3px;
     left: 10px;
     font-size: 12px;
     color: red;
